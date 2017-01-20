@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.config.js",
     "build:prod": "NODE_ENV=production webpack -p",
-    "deploy-gh-pages": "git checkout gh-pages && git merge -X theirs master --no-edit && npm run build:prod && git commit -m 'build' && git push && git checkout master",
+    "deploy-gh-pages": "git checkout gh-pages && git merge -X theirs master --no-edit && npm run build:prod && git add . && git commit -m 'build for gh-pages' && git push && git checkout master",
     "jupyter": "docker run -it --rm -p 8888:8888 policedata"
   },
   "author": "Zach Schwartz",

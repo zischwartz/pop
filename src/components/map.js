@@ -31,7 +31,7 @@ class Map extends React.Component {
       map.addLayer(hover_layer)
       // now add some controls
       map.addControl(new mapboxgl.ScaleControl({
-        maxWidth: 300,
+        maxWidth: 250,
         unit: 'imperial'
       }))
       map.addControl(new LegendControl({}))
