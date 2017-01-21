@@ -148,18 +148,21 @@ function setup_popups(map){
 }
 
 // don't actually include min zoom in our zoom stops, as that would  cause the difference to be 0
-function create_stops(zooms=[4, 6, 8, 10, 12, 14, 16], values=[0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7], min_zoom=3){
+// also, I don't totally understand how the stops work. like how does it interpolate? wish it oculd juse use d3-scale
+function create_stops(zooms=[4,5,6,7,8,9,10,11,12,13,14,15,16], values=[1e1, 1e3, 1e5, 1e7], min_zoom=3){
   let stops = []
   for (let zoom of zooms){
     let zd = zoom-min_zoom // assumes we're only zoomin in
     for (let value of values){
       let rad = Math.sqrt(value/1000) //Math.log(value)
       rad*=zd
+      rad = Math.round(rad)
       let s = [{zoom, value}, rad]
       stops.push(s)
     }
 
   }
+  // console.log(stops)
   return stops
 }
 

@@ -15,8 +15,9 @@ To fix this, I wrote a quick kludge that computes the distances of all the featu
 The built in scale component is great, smoothly providing context as you zoom. I wanted the same thing, but for the data.
 
 ### Mobile/ iOS
-The map wouldn't load at all on my iPhone. The safari dev console threw no errors, until I tried to manually create a map in the console, which threw `Error: Map canvas (1960x2922) is larger than half of gl.MAX_RENDERBUFFER_SIZE (2048)`.  [These](https://github.com/mapbox/mapbox-gl-js/issues/3935)  [issues](https://github.com/mapbox/mapbox-gl-js/issues/2893) explain some, but the simplest fix was to simply rollback mapboxgl a few versions to [`0.29.0`](https://github.com/mapbox/mapbox-gl-js/releases/tag/v0.29.0) which was before this bug was introduced. 
+The map wouldn't load at all on my iPhone. The safari dev console threw no errors, until I tried to manually create a map in the console, which threw `Error: Map canvas (1960x2922) is larger than half of gl.MAX_RENDERBUFFER_SIZE (2048)`.  [These](https://github.com/mapbox/mapbox-gl-js/issues/3935)  [issues](https://github.com/mapbox/mapbox-gl-js/issues/2893) explain some, but the simplest fix was to simply rollback mapboxgl a few versions to [`0.29.0`](https://github.com/mapbox/mapbox-gl-js/releases/tag/v0.29.0) which was before this bug was introduced.
 
+`http-server` and xip.io were super helpful for debugging this.
 
 
 ## Code
