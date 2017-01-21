@@ -1,10 +1,11 @@
 {
-  "name": "1033",
+  "name": "pop",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.config.js",
+    "build": "webpack",
     "build:prod": "NODE_ENV=production webpack -p",
     "deploy-gh-pages": "git checkout gh-pages && git merge -X theirs master --no-edit && git push && git checkout master",
     "jupyter": "docker run -it --rm -p 8888:8888 policedata"
@@ -33,7 +34,7 @@
   },
   "dependencies": {
     "d3": "^4.4.1",
-    "mapbox-gl": "^0.30.0",
+    "mapbox-gl": "^0.29.0",
     "node-ziggurat": "0.0.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"

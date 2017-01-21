@@ -6,7 +6,7 @@ import {getDistance} from '../utils.js'
 import styles from './map.css';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiemlzY2h3YXJ0eiIsImEiOiJjaXhxOXp5eGIwOHJqMzNubnI2Zjh2a2RjIn0.CMKNggl2Se8uH0GEKEJcJw'
-
+window.mapboxgl = mapboxgl
 // image markers example, possibly useful
 // https://www.mapbox.com/mapbox-gl-js/example/geojson-markers/
 
@@ -82,20 +82,10 @@ function load_data(map) {
 } // end load data
 
 
-
-function create_feature(lng, lat, properties={}){
-  return {
-    type: 'Feature',
-    properties: properties,
-    geometry: {
-      type: 'Point',
-      coordinates: [lng, lat]
-    }
-  }
-}
-
-function make_map(container, properties={}){
-  return new Promise (function(resolve, reject){
+function make_map(container){
+  // console.log('make map called, about to promise')
+  // console.log(mapboxgl.version)
+  return new Promise(function(resolve, reject){
     let map = new mapboxgl.Map({
           container: container, // can be element or element id
           // style: 'mapbox://styles/mapbox/streets-v9'
@@ -107,7 +97,17 @@ function make_map(container, properties={}){
       })
     map.on('load', ()=> resolve(map) )
   })
+}
 
+function create_feature(lng, lat, properties={}){
+  return {
+    type: 'Feature',
+    properties: properties,
+    geometry: {
+      type: 'Point',
+      coordinates: [lng, lat]
+    }
+  }
 }
 
 // map.on('mouseover', function(e) {
@@ -121,14 +121,11 @@ function setup_popups(map){
   var popup = new mapboxgl.Popup({closeButton: false,  closeOnClick: false })
   map.on('mousedown', function(e) {
     if (!e.point){return}
-    // console.log(e.point)
     var features = map.queryRenderedFeatures(e.point, { layers: ['point'] });
-    // console.log(features)
     if (!features.length) {
         popup.remove();
         return;
     }
-
     // XXX
     // this is a hack because queryRenderedFeatures returns too many results when data driven circle radius
     // see https://github.com/mapbox/mapbox-gl-js/issues/3604
@@ -140,7 +137,6 @@ function setup_popups(map){
     if (feature){
       map.setFilter('point-hover', ["==", 'id', feature.properties.id])
     }
-
     // Populate the popup and set its coordinates
     // based on the feature found.
     let pop = feature.properties.pop
@@ -148,7 +144,7 @@ function setup_popups(map){
     popup.setLngLat(feature.geometry.coordinates)
         .setHTML(feature.properties.id+ ' <br>'+pop.toLocaleString())
         .addTo(map);
-});
+    }) // end on mousedown
 }
 
 // don't actually include min zoom in our zoom stops, as that would  cause the difference to be 0
