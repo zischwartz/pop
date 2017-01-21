@@ -41,7 +41,7 @@ class Map extends React.Component {
         maxWidth: 250,
         unit: 'imperial'
       }))
-      map.addControl(new LegendControl({}))
+      map.addControl(new LegendControl({scale:scale_for_legend, value:1e5}))
       map.addControl(new mapboxgl.NavigationControl());
       // map.addControl(new mapboxgl.GeolocateControl({  positionOptions: {   enableHighAccuracy: true }}))
       // finally setup our popups
@@ -56,6 +56,22 @@ class Map extends React.Component {
 }
 
 export default Map;
+
+function general_scale(value, zoomdiff){
+  let rad = Math.sqrt(value/10)/10 // sure why not
+  rad*=zoomdiff
+  return Math.round(rad)
+}
+
+function scale_for_legend(value, map){
+  let zd = map.getZoom()-map.getMinZoom()
+  zd = Math.max(zd, 1) // make sure it's at least 1
+  let rad = general_scale(value, zd)
+  let width = rad*2
+  width-=2 // to make up for the white border sorta
+  return width
+}
+
 
 function load_data(map) {
   return new Promise(function(resolve, reject){
@@ -147,16 +163,15 @@ function setup_popups(map){
     }) // end on mousedown
 }
 
+
+
 // don't actually include min zoom in our zoom stops, as that would  cause the difference to be 0
 // also, I don't totally understand how the stops work. like how does it interpolate? wish it oculd juse use d3-scale
 function create_stops(zooms=[4,5,6,7,8,9,10,11,12,13,14,15,16], values=[1e1, 1e3, 1e5, 1e7], min_zoom=3){
   let stops = []
   for (let zoom of zooms){
-    let zd = zoom-min_zoom // assumes we're only zoomin in
     for (let value of values){
-      let rad = Math.sqrt(value/1000) //Math.log(value)
-      rad*=zd
-      rad = Math.round(rad)
+      let rad = general_scale(value, zoom-min_zoom)
       let s = [{zoom, value}, rad]
       stops.push(s)
     }
