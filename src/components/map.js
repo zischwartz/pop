@@ -18,14 +18,16 @@ class Map extends React.Component {
     if (!mapboxgl.supported()) {
       alert('Your browser does not support Mapbox GL');
       return
-    }
+    } else { console.log('supported!')}
     make_map(this.refs.mapboxMap).then(load_data).then(([geojson, map])=> {
+      window.map = map //debug
       map.addSource('data', {
         type: 'geojson',
         data: geojson,
         // cluster: true, // https://www.mapbox.com/mapbox-gl-js/example/cluster/
         // clusterRadius: 25 // default is 50
       })
+      console.log('done adding data')
       map.addLayer(point_layer_obj()); // end add layer
       // same as above, just need a different one for hover/click
       let hover_layer = point_layer_obj()
@@ -33,6 +35,7 @@ class Map extends React.Component {
       hover_layer['id'] =  'point-hover'
       hover_layer['filter'] =  ["==", 'id', "NONE"]
       map.addLayer(hover_layer)
+      console.log('done adding layers')
       // now add some controls
       map.addControl(new mapboxgl.ScaleControl({
         maxWidth: 250,

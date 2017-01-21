@@ -6,7 +6,7 @@ class LegendControl {
     }
     onAdd(map) {
         this._map = map;
-        window.map = map // debug
+        // window.map = map // debug
         this._container = document.createElement('div');
         this._container.className = 'mapboxgl-ctrl';
         this._container.textContent = 'Hello, world!';
